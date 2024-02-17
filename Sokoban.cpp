@@ -2,5 +2,5 @@
 
 int main()
 {
-	printf("Sukaban");
+	printf("Sokoban");
 }
