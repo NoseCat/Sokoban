@@ -1,7 +1,8 @@
 #include <iostream>
 #include <conio.h>
 
-const int max_lvl = 2;
+//счётчик файлов добавить.
+const int max_lvl = 3;
 
 int level_choice();
 int opening(int lvl);
