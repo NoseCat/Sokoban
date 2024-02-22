@@ -2,12 +2,20 @@
 #include <conio.h>
 
 enum arrowkeys { UP_KEY = 0x48, DOWN_KEY = 0x50, LEFT_KEY = 0x4B, RIGHT_KEY = 0x4D };
-enum direction { STAND, UP_DIR, DOWN_DIR, LEFT_DIR, RIGHT_DIR };
+enum direction { STAND, UP_DIR, DOWN_DIR, LEFT_DIR, RIGHT_DIR, CANCEL};
 
-enum objects { EMPTY, WALL, PLAYER, BOX, MOVED_PLAYER };
+enum objects { EMPTY, WALL, PLAYER, BOX};
 
 const int rows = 10, cols = 15;
 int matrix[rows][cols] = {};
+
+int history[1000] = {};
+
+//мен€ет местами интовые а и b (така€ форма работает только дл€ целочисленых)
+void swap(int& a, int& b)
+{
+	a ^= b ^= a ^= b;
+}
 
 //ѕолучение с клавиатуры клавиши
 //STAND - передаетс€ try_move чтобы сказать что она ничего не делает
@@ -56,6 +64,9 @@ int get_player_input()
 		//restart();
 		return STAND;
 		break;
+	case ' ':
+		return CANCEL;
+		break;
 	default:
 		//printf("default\n");
 		return STAND;
@@ -90,6 +101,8 @@ void try_move(int y, int x, int dir, bool move_boxes)
 	case RIGHT_DIR:
 		target_x++; //вправо - повышаетс€
 		break;
+	case CANCEL:
+		break;
 	default:
 		printf("try_move: default\n");
 		return;
@@ -102,13 +115,13 @@ void try_move(int y, int x, int dir, bool move_boxes)
 	//ѕусто
 	if (matrix[target_y][target_x] == EMPTY)
 	{
-		//swap(matrix[y][x], matrix[target_y][target_x]);
-		if ((dir == RIGHT_DIR || dir == DOWN_DIR) && matrix[y][x] == PLAYER)
-			matrix[target_y][target_x] = MOVED_PLAYER;
-		else
-			matrix[target_y][target_x] = matrix[y][x];
+		swap(matrix[y][x], matrix[target_y][target_x]);
+		//if ((dir == RIGHT_DIR || dir == DOWN_DIR) && matrix[y][x] == PLAYER)
+			//matrix[target_y][target_x] = MOVED_PLAYER;
+		//else
+			//matrix[target_y][target_x] = matrix[y][x];
 
-		matrix[y][x] = EMPTY;
+		//matrix[y][x] = EMPTY;
 	}
 
 	// оробка
@@ -128,6 +141,24 @@ void try_move(int y, int x, int dir, bool move_boxes)
 		try_move(target_y, target_x, dir, true);
 		try_move(y, x, dir, false);
 	} */
+}
+
+void move_player(int dir)
+{
+	for (int i = 0; i < rows; i++)
+		for (int j = 0; j < cols; j++)
+		{
+			if (matrix[i][j] == PLAYER)
+			{
+				try_move(i, j, dir, true); // is matrix global?
+				return;
+			}
+
+			//if (matrix[i][j] == MOVED_PLAYER)
+			//{
+				//matrix[i][j] = PLAYER;
+			//}
+		}
 }
 
 int main()
@@ -152,17 +183,6 @@ int main()
 		}
 
 		dir = get_player_input();
-		for (int i = 0; i < rows; i++)
-			for (int j = 0; j < cols; j++)
-			{
-				if (matrix[i][j] == PLAYER)
-				{
-					try_move(i, j, dir, true); // is matrix global?
-				}
-				if (matrix[i][j] == MOVED_PLAYER)
-				{
-					matrix[i][j] = PLAYER;
-				}
-			}
+		move_player(dir);
 	}
 }
