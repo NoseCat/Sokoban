@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="levels.cpp" />
     <ClCompile Include="Movement.cpp" />
     <ClCompile Include="Sokoban.cpp" />
   </ItemGroup>
