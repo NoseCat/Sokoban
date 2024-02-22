@@ -21,7 +21,7 @@
     <ClCompile Include="Movement.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="levels.cpp">
+    <ClCompile Include="Levels.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="Menu.cpp">

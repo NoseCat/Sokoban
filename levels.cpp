@@ -4,11 +4,30 @@
 #include < fstream >
 #include < vector >
 using namespace std;
+
+//ВСЕ ЦИФРЫ ЗАМЕНИТЬ НА КОНСТАНТЫ!!!!!
+//enum objects { EMPTY, WALL, PLAYER, BOX};
+
 void openfilelvl(char* str)
 {
 	printf("введите номер уровня");
 	int choice;
 	bool flag;
+
+	/*
+	FILE* text;
+
+	if (fopen_s(&text, filename, "rt") == 0)
+	{
+		делаем с файлом фигню;
+		fclose(text);
+	}
+	else
+	{
+		printf("Ошибка открытия файла %s для чтения", filename);
+		exit(1);
+	}
+	*/
 
 	do {
 		flag = false;
@@ -91,6 +110,14 @@ int main()
 	{
 		for (int j = 0; j < rows; j++)
 		{
+			/* switch (numbar)
+			{
+			case 1:
+				do whateever;
+				break;
+			default:
+				do default;
+			}*/
 			if (mas[i][j] == 1)
 				printf("#");
 			else if (mas[i][j] == 2)
