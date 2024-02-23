@@ -1,10 +1,21 @@
 #include <iostream>
 #include <conio.h>
-#include "Movement.h"
-//enum objects { EMPTY, WALL, PLAYER, BOX };
+#include "Levels.h"
 
-//const int rows = 10, cols = 15;
-//int matrix[rows][cols] = {};
+enum arrowkeys { UP_KEY = 0x48, DOWN_KEY = 0x50, LEFT_KEY = 0x4B, RIGHT_KEY = 0x4D };
+enum direction { STAND, UP_DIR, DOWN_DIR, LEFT_DIR, RIGHT_DIR, UNDO, RESTART };
+enum history { BOXINDICATOR = -1 };
+
+const int MAXARRAYLENGTH = 1000;
+int movehistory[MAXARRAYLENGTH] = {};
+
+extern int mas[rows][cols];
+
+//мен€ет местами интовые а и b (така€ форма работает только дл€ целочисленых)
+void swap(int& a, int& b)
+{
+	a ^= b ^= a ^= b;
+}
 
 //возвращает индекс первого пустого элемента массива
 //не примен€ть на неинициализированые массивы!
@@ -15,6 +26,7 @@ int array_first_empty(int array[])
 		if (array[i] == 0)
 			return i;
 	}
+	return 0;
 }
 
 //ѕолучение с клавиатуры клавиши
@@ -104,18 +116,18 @@ void try_move(int y, int x, int dir, bool move_boxes)
 	//обработка направлени€ движени€
 
 	//—тена, здесь же и проверка на выход за границы матрицы
-	if (target_x < 0 || target_x >= cols || target_y < 0 || target_y >= rows || matrix[target_y][target_x] == WALL)
+	if (target_x < 0 || target_x >= cols || target_y < 0 || target_y >= rows || mas[target_y][target_x] == WALL)
 		return;
 
 	//ѕусто
-	if (matrix[target_y][target_x] == EMPTY)
+	if (mas[target_y][target_x] == EMPTY)
 	{
-		swap(matrix[y][x], matrix[target_y][target_x]);
+		swap(mas[y][x], mas[target_y][target_x]);
 		return;
 	}
 
 	// оробка
-	if (matrix[target_y][target_x] == BOX)
+	if (mas[target_y][target_x] == BOX)
 	{
 		if (move_boxes)
 		{
@@ -188,7 +200,7 @@ void undo()
 	for (int i = 0; i < rows; i++)
 		for (int j = 0; j < cols; j++)
 		{
-			if (matrix[i][j] == PLAYER)
+			if (mas[i][j] == PLAYER)
 			{
 				movehistory[firstempty - 1] = 0;
 				try_move(i, j, backdir, false);
@@ -221,7 +233,7 @@ void move_player(int dir)
 		for (int i = 0; i < rows; i++)
 			for (int j = 0; j < cols; j++)
 			{
-				if (matrix[i][j] == PLAYER)
+				if (mas[i][j] == PLAYER)
 				{
 					try_move(i, j, dir, true);
 					return;

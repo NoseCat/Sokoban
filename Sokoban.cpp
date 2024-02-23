@@ -2,18 +2,27 @@
 #include <conio.h>
 
 #include "Menu.h"
+#include "Levels.h"
 #include "Movement.h"
-
-extern Matrix[]
 
 int main()
 {
-	system("chcp 1251 > 0");
-	while (win_check())
+	system("chcp 1251 > nul");
+
+	char fullstr[1000]{};
+	openfilelvl(fullstr);
+
+	int dir = 0;
+
+	//while (win_check())
+	while (true)
 	{
-		display();
+		system("cls");
+		displaymatrix();
 
 		dir = get_player_input();
 		move_player(dir);
 	}
+
+	return 0;
 }

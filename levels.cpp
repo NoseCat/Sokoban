@@ -1,71 +1,38 @@
 #define _CRT_SECURE_NO_WARNINGS
+
 #include <iostream>
 #include <string>
-#include < fstream >
-#include < vector >
-using namespace std;
 
-//ВСЕ ЦИФРЫ ЗАМЕНИТЬ НА КОНСТАНТЫ!!!!!
-//enum objects { EMPTY, WALL, PLAYER, BOX, FINISH, NEXTROWS};
-const int cols = 20, rows = 20;
-void openfilelvl(char* str)
+enum objects { EMPTY, WALL, PLAYER, BOX, FINISH, NEXTROWS };
+
+enum sizes { rows = 20, cols = 20 };
+
+//const int cols = 20, rows = 20;
+int mas[rows][cols];
+
+void openfilelvl(char* fullstr)
 {
-	printf("введите номер уровня  ");
-	int choice;
-	FILE* ft;
-	char st[100];
-	scanf("%d", &choice);
-	switch (choice)
-	{
-	case 0:
-		ft = fopen("test.txt", "rt");
+	FILE* level;
+	char str[100];
 
-		while (fgets(st, 100, ft))
-			strcat(str, st);
-		fclose(ft);
-		//cout << str << endl << endl;
-		break;
-	case 1:
-
-		ft = fopen("lvl1.txt", "rt");
-
-		while (fgets(st, 100, ft))
-			strcat(str, st);
-		fclose(ft);
-		break;
-	case 2:
-
-		ft = fopen("lvl2.txt", "rt");
-
-		while (fgets(st, 100, ft))
-			strcat(str, st);
-		fclose(ft);
-		break;
-	default:
-		printf("уровень не найден");
-
-
-	}
+	fopen_s(&level, "test.txt", "rt");
+		while (fgets(str, 100, level))
+			strcat(fullstr, str);
+		fclose(level);
 }
-int main()
+
+void filmas(char str[])
 {
-	setlocale(LC_ALL, "rus");
-	char str[1000]{};
-	openfilelvl(str);
-
-
-	
-	
 	int counterstr = -1;
-	for (int i = 0; i < cols; i++)
+	for (int i = 0; i < rows; i++)
 	{
 		bool flag = false;
-		for (int j = 0; j < rows; j++)
+		for (int j = 0; j < cols; j++)
 		{
 			counterstr++;
 			if (str[counterstr] == '#')
 				mas[i][j] = WALL;
-			else if (str[counterstr] == '.' or str[counterstr] == 32)
+			else if (str[counterstr] == '.' or str[counterstr] == ' ')
 				mas[i][j] = EMPTY;
 			else if (str[counterstr] == '@')
 				mas[i][j] = PLAYER;
@@ -73,30 +40,24 @@ int main()
 				mas[i][j] = BOX;
 			else if (str[counterstr] == 'X')
 				mas[i][j] = FINISH;
-			else if (str[counterstr] == 'n')
+			else if (str[counterstr] == '\n')
 			{
 				mas[i][j] = NEXTROWS;
 				flag = true;
 				break;
 			}
-
 		}
 		if (!flag)
 			break;
 	}
+}
 
-	for (int i = 0; i < cols; i++)
+void displaymatrix()
+{
+	for (int i = 0; i < rows; i++)
 	{
-		for (int j = 0; j < rows; j++)
+		for (int j = 0; j < cols; j++)
 		{
-			/* switch (numbar)
-			{
-			case 1:
-				do whateever;
-				break;
-			default:
-				do default;
-			}*/
 			if (mas[i][j] == WALL)
 				printf("#");
 			else if (mas[i][j] == EMPTY)
@@ -112,3 +73,6 @@ int main()
 		}
 	}
 }
+
+/*char fullstr[1000]{};
+openfilelvl(str);*/

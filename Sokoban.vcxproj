@@ -133,6 +133,7 @@
     <ClCompile Include="Sokoban.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Levels.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Movement.h" />
   </ItemGroup>
