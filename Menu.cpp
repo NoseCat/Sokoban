@@ -4,6 +4,9 @@
 //счётчик файлов добавить.
 const int max_lvl = 3;
 
+//коды кнопок.
+enum keyboard_kod { UP_KEY = 0x48, DOWN_KEY = 0x50, LEFT_KEY = 0x4B, RIGHT_KEY = 0x4D, SPACE = 32, ENTER = 13};
+
 int level_choice();
 int opening(int lvl);
 int ending();
@@ -53,7 +56,7 @@ int menu()
 			default:
 				break;
 			}
-		} while (menu_code != 13 and menu_code != 32);
+		} while (ENTER and SPACE);
 
 		// 1.Start 2.Exit
 		switch (menu_choice)
@@ -138,7 +141,7 @@ int level_choice()
 			printf("Level 2\n\n#######\n#.....#\n#..@..###\n#.......#\n#...[]..#\n#.......#\n###..X..#\n  #.....#\n  #######\n\npress enter or spacebar to continue");
 			break;
 		}
-	} while (lvl_code != 13 and lvl_code != 32);
+	} while (ENTER and SPACE);
 
 
 	switch (lvl_choice)
@@ -170,14 +173,4 @@ int ending()
 {
 
 	return 0;// ЗАГЛУШКА. Если вы её видите, сообщите ответственному за этот участок кода.
-	//Заглушка не соотвествет ГОСТ 35345, срочно исправить!
-}
-
-int main()
-{
-	system("chcp 1251 > nul");
-
-	menu();
-
-	return 0;
 }
