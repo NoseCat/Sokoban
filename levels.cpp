@@ -6,67 +6,46 @@
 using namespace std;
 
 //ВСЕ ЦИФРЫ ЗАМЕНИТЬ НА КОНСТАНТЫ!!!!!
-//enum objects { EMPTY, WALL, PLAYER, BOX};
-
+//enum objects { EMPTY, WALL, PLAYER, BOX, FINISH, NEXTROWS};
+const int cols = 20, rows = 20;
 void openfilelvl(char* str)
 {
-	printf("введите номер уровня");
+	printf("введите номер уровня  ");
 	int choice;
-	bool flag;
-
-	/*
-	FILE* text;
-
-	if (fopen_s(&text, filename, "rt") == 0)
+	FILE* ft;
+	char st[100];
+	scanf("%d", &choice);
+	switch (choice)
 	{
-		делаем с файлом фигню;
-		fclose(text);
+	case 0:
+		ft = fopen("test.txt", "rt");
+
+		while (fgets(st, 100, ft))
+			strcat(str, st);
+		fclose(ft);
+		//cout << str << endl << endl;
+		break;
+	case 1:
+
+		ft = fopen("lvl1.txt", "rt");
+
+		while (fgets(st, 100, ft))
+			strcat(str, st);
+		fclose(ft);
+		break;
+	case 2:
+
+		ft = fopen("lvl2.txt", "rt");
+
+		while (fgets(st, 100, ft))
+			strcat(str, st);
+		fclose(ft);
+		break;
+	default:
+		printf("уровень не найден");
+
+
 	}
-	else
-	{
-		printf("Ошибка открытия файла %s для чтения", filename);
-		exit(1);
-	}
-	*/
-
-	do {
-		flag = false;
-		scanf("%d", &choice);
-		if (choice == 0)
-		{
-			ifstream f("test.txt");
-
-			char st[100];
-			char nochka[2] = "n";
-			while (f.getline(st, 100))
-			{
-				strcat(str, st);
-				strcat(str, nochka);
-			}
-			//cout << str << endl << endl;
-			f.close();
-		}
-		else if (choice == 1)
-		{
-			ifstream f("lvl1.txt");
-
-			char st[100];
-			char nochka[2] = "n";
-			while (f.getline(st, 100))
-			{
-				strcat(str, st);
-				strcat(str, nochka);
-			}
-			//cout << str << endl << endl;
-			f.close();
-		}
-		else
-		{
-			printf("уровень не найден");
-			flag = true;
-		}
-	} while (flag);
-
 }
 int main()
 {
@@ -75,8 +54,8 @@ int main()
 	openfilelvl(str);
 
 
-	const int cols = 20, rows = 20;
-	int mas[cols][rows] = {};
+	
+	
 	int counterstr = -1;
 	for (int i = 0; i < cols; i++)
 	{
@@ -85,18 +64,18 @@ int main()
 		{
 			counterstr++;
 			if (str[counterstr] == '#')
-				mas[i][j] = 1;
+				mas[i][j] = WALL;
 			else if (str[counterstr] == '.' or str[counterstr] == 32)
-				mas[i][j] = 2;
+				mas[i][j] = EMPTY;
 			else if (str[counterstr] == '@')
-				mas[i][j] = 3;
+				mas[i][j] = PLAYER;
 			else if (str[counterstr] == 'B')
-				mas[i][j] = 4;
+				mas[i][j] = BOX;
 			else if (str[counterstr] == 'X')
-				mas[i][j] = 5;
+				mas[i][j] = FINISH;
 			else if (str[counterstr] == 'n')
 			{
-				mas[i][j] = 7;
+				mas[i][j] = NEXTROWS;
 				flag = true;
 				break;
 			}
@@ -118,17 +97,17 @@ int main()
 			default:
 				do default;
 			}*/
-			if (mas[i][j] == 1)
+			if (mas[i][j] == WALL)
 				printf("#");
-			else if (mas[i][j] == 2)
+			else if (mas[i][j] == EMPTY)
 				printf(" ");
-			else if (mas[i][j] == 3)
+			else if (mas[i][j] == PLAYER)
 				printf("@");
-			else if (mas[i][j] == 4)
+			else if (mas[i][j] == BOX)
 				printf("B");
-			else if (mas[i][j] == 5)
+			else if (mas[i][j] == FINISH)
 				printf("X");
-			else if (mas[i][j] == 7)
+			else if (mas[i][j] == NEXTROWS)
 				printf("\n");
 		}
 	}
