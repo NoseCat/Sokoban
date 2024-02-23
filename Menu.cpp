@@ -1,83 +1,88 @@
 #include <iostream>
 #include <conio.h>
 
-//счётчик файлов добавить.
+// предполагаемый максимум уровней.
 const int max_lvl = 3;
 
-//коды кнопок.
+// коды кнопок.
 enum keyboard_kod { UP_KEY = 0x48, DOWN_KEY = 0x50, LEFT_KEY = 0x4B, RIGHT_KEY = 0x4D, SPACE = 32, ENTER = 13 };
+// переменная, в которую записывается код клавиши.
 int  key_code;
 
 int level_choice();
-int opening(int lvl);
-int ending();
-
 
 // Запускает интерфейс выбора уровня и возвращает номер выбранного уровня. Если возвращает 0, то было выбрано Exit.
 int menu()
 {
+	//переменная для для выхода в меню.
 	bool repeat;
 	do
 	{
 		repeat = 0;
+		
+		//menu_choice - выбраный пункт меню. level - результат level_choice(), чтобы избежать повторного вызова.
 		int menu_choice = 1, level;
-		system("cls");
-		printf("\tSocoban\n\n");
-		printf(">> Start game\nExit\n\npress enter or spacebar to continue");
 
 		do
 		{
+			// 1.Start 2.Exit
+			switch (menu_choice)
+			{
+			case 1:
+				system("cls");
+				printf("\tSocoban\n\n");
+				printf(">> Start game\nExit\n\npress enter or spacebar to continue");
+				break;
+
+			case 2:
+				system("cls");
+				printf("\tSocoban\n\n");
+				printf("Start game\n>> Exit\n\npress enter or spacebar to continue");
+				break;
+
+			default:
+				system("cls");
+				printf("error: menu's switch.");
+				break;
+			}
+			
 			key_code = _getch();
 			switch (key_code)
 			{
-			case 0x48:
+			case UP_KEY:
 			case 'W':
 			case 'w':
 			case 'Ц':
 			case 'ц':
-				system("cls");
-				printf("\tSocoban\n\n");
-				printf(">> Start game\nExit\n\npress enter or spacebar to continue");
 				menu_choice = 1;
 				break;
 
-			case 0x50:
+			case DOWN_KEY:
 			case 'S':
 			case 's':
 			case 'Ы':
 			case 'ы':
-				system("cls");
-				printf("\tSocoban\n\n");
-				printf("Start game\n>> Exit\n\npress enter or spacebar to continue");
 				menu_choice = 2;
 				break;
 
 			default:
 				break;
 			}
+
 		} while (key_code != ENTER and key_code != SPACE);
 
-		// 1.Start 2.Exit
-		switch (menu_choice)
+		// если выбран Exit.
+		if (menu_choice == 2) return 0;
+
+		// вызов интерфейса выбора уровня.
+		level = level_choice();
+		if (level == 0) // если выбран возврат в меню
 		{
-		case 1:
-			level = level_choice();
-			if (level == 0)
-			{
-				system("cls");
-				repeat = 1;
-			}
-			else return level;
-			break;
-
-		case 2:
-			return 0;
-
-		default:
 			system("cls");
-			printf("error: menu's switch.");
-			break;
+			repeat = 1;
 		}
+		else return level;
+
 	} while (repeat == 1);
 
 	return 0;
