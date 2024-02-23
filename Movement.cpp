@@ -1,8 +1,9 @@
 #include <iostream>
 #include <conio.h>
 #include "Levels.h"
+#include "Menu.h"
 
-enum arrowkeys { UP_KEY = 0x48, DOWN_KEY = 0x50, LEFT_KEY = 0x4B, RIGHT_KEY = 0x4D };
+//enum arrowkeys { UP_KEY = 0x48, DOWN_KEY = 0x50, LEFT_KEY = 0x4B, RIGHT_KEY = 0x4D };
 enum direction { STAND, UP_DIR, DOWN_DIR, LEFT_DIR, RIGHT_DIR, UNDO, RESTART };
 enum history { BOXINDICATOR = -1 };
 
@@ -87,7 +88,7 @@ int get_player_input()
 //Пытается сдвинуть элемент матрицы в сторону dir
 //так как i идет сверху вниз (; i < rows; i++), и j идет вправо (; j < cols; j++) то в данной системе координат
 //y направлен вниз, x направлен вправо
-void try_move(int y, int x, int dir, bool move_boxes)
+void try_move(int y, int x, int dir, bool move_boxes, bool write_history)
 {
 	int target_y = y;
 	int target_x = x;
@@ -122,6 +123,8 @@ void try_move(int y, int x, int dir, bool move_boxes)
 	//Пусто
 	if (mas[target_y][target_x] == EMPTY)
 	{
+		if (write_history)
+			movehistory[array_first_empty(movehistory)] = dir;
 		swap(mas[y][x], mas[target_y][target_x]);
 		return;
 	}
@@ -131,10 +134,10 @@ void try_move(int y, int x, int dir, bool move_boxes)
 	{
 		if (move_boxes)
 		{
-			try_move(target_y, target_x, dir, false);
+			try_move(target_y, target_x, dir, false, false);
 			//Если двигается коробка нужно это отметить
+			try_move(y, x, dir, false, true);
 			movehistory[array_first_empty(movehistory)] = BOXINDICATOR;
-			try_move(y, x, dir, false);
 			return;
 		}
 		else { return; }
@@ -203,22 +206,24 @@ void undo()
 			if (mas[i][j] == PLAYER)
 			{
 				movehistory[firstempty - 1] = 0;
-				try_move(i, j, backdir, false);
+				try_move(i, j, backdir, false, false);
 				if (box)
-					try_move(i + box_y, j + box_x, backdir, false);
+					try_move(i + box_y, j + box_x, backdir, false, false);
 				return;
 			}
 		}
 }
 
 //находит игрока и опредеделяет действие
-void move_player(int dir)
+void move_player(int dir, char lvl[])
 {
 	switch (dir)
 	{
 	case STAND:
 		return; break;
 	case RESTART:
+		filmas(lvl);
+		//clear history
 		//restart();
 		return; break;
 	case UNDO:
@@ -229,13 +234,12 @@ void move_player(int dir)
 	case LEFT_DIR:
 	case RIGHT_DIR:
 
-		movehistory[array_first_empty(movehistory)] = dir;
 		for (int i = 0; i < rows; i++)
 			for (int j = 0; j < cols; j++)
 			{
 				if (mas[i][j] == PLAYER)
 				{
-					try_move(i, j, dir, true);
+					try_move(i, j, dir, true, true);
 					return;
 				}
 			}

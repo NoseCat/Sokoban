@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-enum objects { EMPTY, WALL, PLAYER, BOX, FINISH, NEXTROWS };
+enum objects { EMPTY = 1, WALL, PLAYER, BOX, FINISH, NEXTROWS};
 
 enum sizes { rows = 20, cols = 20 };
 

@@ -129,6 +129,7 @@ int level_choice()
 		{
 		case 0:
 			system("cls");
+
 			printf("Back to Menu\n __________\n|   Scbn   |\n|>Strt     |\n|Ext_______|\n\npress enter or spacebar to continue");
 			break;
 		case 1:
