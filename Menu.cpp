@@ -56,7 +56,7 @@ int menu()
 			default:
 				break;
 			}
-		} while (ENTER and SPACE);
+		} while (menu_code != ENTER and menu_code != SPACE);
 
 		// 1.Start 2.Exit
 		switch (menu_choice)
@@ -141,7 +141,7 @@ int level_choice()
 			printf("Level 2\n\n#######\n#.....#\n#..@..###\n#.......#\n#...[]..#\n#.......#\n###..X..#\n  #.....#\n  #######\n\npress enter or spacebar to continue");
 			break;
 		}
-	} while (ENTER and SPACE);
+	} while (lvl_code != ENTER and lvl_code != SPACE);
 
 
 	switch (lvl_choice)
@@ -173,4 +173,12 @@ int ending()
 {
 
 	return 0;// ЗАГЛУШКА. Если вы её видите, сообщите ответственному за этот участок кода.
+}
+
+int main()
+{
+
+	menu();
+
+	return 0;
 }
