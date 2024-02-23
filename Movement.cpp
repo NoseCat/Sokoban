@@ -1,24 +1,23 @@
 #include <iostream>
 #include <conio.h>
+#include "Movement.h"
+//enum objects { EMPTY, WALL, PLAYER, BOX };
 
-enum arrowkeys { UP_KEY = 0x48, DOWN_KEY = 0x50, LEFT_KEY = 0x4B, RIGHT_KEY = 0x4D };
-enum direction { STAND, UP_DIR, DOWN_DIR, LEFT_DIR, RIGHT_DIR, CANCEL};
+//const int rows = 10, cols = 15;
+//int matrix[rows][cols] = {};
 
-enum objects { EMPTY, WALL, PLAYER, BOX};
-
-const int rows = 10, cols = 15;
-int matrix[rows][cols] = {};
-
-int history[1000] = {};
-
-//меняет местами интовые а и b (такая форма работает только для целочисленых)
-void swap(int& a, int& b)
+//возвращает индекс первого пустого элемента массива
+//не применять на неинициализированые массивы!
+int array_first_empty(int array[])
 {
-	a ^= b ^= a ^= b;
+	for (int i = 0; i < MAXARRAYLENGTH; i++)
+	{
+		if (array[i] == 0)
+			return i;
+	}
 }
 
 //Получение с клавиатуры клавиши
-//STAND - передается try_move чтобы сказать что она ничего не делает
 int get_player_input()
 {
 	char chardir = _getch();
@@ -29,7 +28,6 @@ int get_player_input()
 	case 'w':
 	case 'Ц':
 	case 'ц':
-		//printf("up\n");
 		return UP_DIR;
 		break;
 	case DOWN_KEY:
@@ -37,7 +35,6 @@ int get_player_input()
 	case 's':
 	case 'Ы':
 	case 'ы':
-		//printf("down\n");
 		return DOWN_DIR;
 		break;
 	case LEFT_KEY:
@@ -45,7 +42,6 @@ int get_player_input()
 	case 'a':
 	case 'Ф':
 	case 'ф':
-		//printf("left\n");
 		return LEFT_DIR;
 		break;
 	case RIGHT_KEY:
@@ -53,24 +49,24 @@ int get_player_input()
 	case 'd':
 	case 'В':
 	case 'в':
-		//printf("right\n");
 		return RIGHT_DIR;
 		break;
+
+	case ' ':
+		return UNDO;
+		break;
+
 	case 'R':
 	case 'r':
 	case 'К':
 	case 'к':
-		//printf("restart\n");
-		//restart();
-		return STAND;
+		return RESTART;
 		break;
-	case ' ':
-		return CANCEL;
-		break;
+
 	default:
-		//printf("default\n");
 		return STAND;
 	}
+	printf("???: we got out of switch for some reason\n");
 	return STAND;
 }
 
@@ -84,11 +80,9 @@ void try_move(int y, int x, int dir, bool move_boxes)
 	int target_y = y;
 	int target_x = x;
 
+	//Находим клетку направления движения
 	switch (dir)
 	{
-	case STAND:
-		return;
-		break;
 	case UP_DIR:
 		target_y--; //если мы движемся вверх y - понижается
 		break;
@@ -101,12 +95,13 @@ void try_move(int y, int x, int dir, bool move_boxes)
 	case RIGHT_DIR:
 		target_x++; //вправо - повышается
 		break;
-	case CANCEL:
-		break;
+
 	default:
 		printf("try_move: default\n");
 		return;
 	}
+
+	//обработка направления движения
 
 	//Стена, здесь же и проверка на выход за границы матрицы
 	if (target_x < 0 || target_x >= cols || target_y < 0 || target_y >= rows || matrix[target_y][target_x] == WALL)
@@ -116,12 +111,7 @@ void try_move(int y, int x, int dir, bool move_boxes)
 	if (matrix[target_y][target_x] == EMPTY)
 	{
 		swap(matrix[y][x], matrix[target_y][target_x]);
-		//if ((dir == RIGHT_DIR || dir == DOWN_DIR) && matrix[y][x] == PLAYER)
-			//matrix[target_y][target_x] = MOVED_PLAYER;
-		//else
-			//matrix[target_y][target_x] = matrix[y][x];
-
-		//matrix[y][x] = EMPTY;
+		return;
 	}
 
 	//Коробка
@@ -130,59 +120,122 @@ void try_move(int y, int x, int dir, bool move_boxes)
 		if (move_boxes)
 		{
 			try_move(target_y, target_x, dir, false);
+			//Если двигается коробка нужно это отметить
+			movehistory[array_first_empty(movehistory)] = BOXINDICATOR;
 			try_move(y, x, dir, false);
+			return;
 		}
 		else { return; }
 	}
-
-	//Тоже игрок
-	/*if (matrix[target_y][target_x] == PLAYER && (dir == RIGHT_DIR || dir == DOWN_DIR))
-	{
-		try_move(target_y, target_x, dir, true);
-		try_move(y, x, dir, false);
-	} */
 }
 
-void move_player(int dir)
+//Возвращает направление обратное данному
+int reverse_direction(int dir)
 {
+	switch (dir)
+	{
+	case UP_DIR:
+		return DOWN_DIR;
+	case DOWN_DIR:
+		return UP_DIR;
+	case RIGHT_DIR:
+		return LEFT_DIR;
+	case LEFT_DIR:
+		return RIGHT_DIR;
+	}
+	return 0;
+}
+
+//отменяет последнее действие согласно movehistory[]
+void undo()
+{
+	int firstempty = array_first_empty(movehistory);
+	if (firstempty == 0)
+		return;
+
+	int box_y = 0;
+	int box_x = 0;
+	bool box = false;
+
+	if (movehistory[firstempty - 1] == BOXINDICATOR)
+	{
+		box = true;
+		movehistory[firstempty - 1] = 0;
+		firstempty--;
+		switch (movehistory[firstempty - 1])
+		{
+		case UP_DIR:
+			box_y--;
+			break;
+		case DOWN_DIR:
+			box_y++;
+			break;
+		case LEFT_DIR:
+			box_x--;
+			break;
+		case RIGHT_DIR:
+			box_x++;
+			break;
+
+		default:
+			printf("box find: default\n");
+			return;
+		}
+	}
+
+	int backdir = reverse_direction(movehistory[firstempty - 1]);
+
 	for (int i = 0; i < rows; i++)
 		for (int j = 0; j < cols; j++)
 		{
 			if (matrix[i][j] == PLAYER)
 			{
-				try_move(i, j, dir, true); // is matrix global?
+				movehistory[firstempty - 1] = 0;
+				try_move(i, j, backdir, false);
+				if (box)
+					try_move(i + box_y, j + box_x, backdir, false);
 				return;
 			}
-
-			//if (matrix[i][j] == MOVED_PLAYER)
-			//{
-				//matrix[i][j] = PLAYER;
-			//}
 		}
 }
 
-int main()
+//находит игрока и опредеделяет действие
+void move_player(int dir)
 {
-	matrix[5][5] = PLAYER;
-	//matrix[6][6] = PLAYER;
-	matrix[7][7] = BOX;
-
-	//вне цикла
-	system("chcp 1251 > nul");
-	int dir = STAND;
-
-	//в цикле
-	while (true)
+	switch (dir)
 	{
-		system("cls");
-		for (int i = 0; i < rows; i++)
-		{
-			printf("\n");
-			for (int j = 0; j < cols; j++)
-				printf("%i", matrix[i][j]);
-		}
+	case STAND:
+		return; break;
+	case RESTART:
+		//restart();
+		return; break;
+	case UNDO:
+		undo();
+		return; break;
+	case UP_DIR:
+	case DOWN_DIR:
+	case LEFT_DIR:
+	case RIGHT_DIR:
 
-		dir = get_player_input();
-		move_player(dir);
+		movehistory[array_first_empty(movehistory)] = dir;
+		for (int i = 0; i < rows; i++)
+			for (int j = 0; j < cols; j++)
+			{
+				if (matrix[i][j] == PLAYER)
+				{
+					try_move(i, j, dir, true);
+					return;
+				}
+			}
+		break;
+
+	default:
+		printf("move_player: default\n");
+		return;
 	}
 }
+
+/* основной цикл
+		dir = get_player_input();
+		move_player(dir);
+*/
