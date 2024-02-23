@@ -5,31 +5,30 @@
 const int max_lvl = 3;
 
 //коды кнопок.
-enum keyboard_kod { UP_KEY = 0x48, DOWN_KEY = 0x50, LEFT_KEY = 0x4B, RIGHT_KEY = 0x4D, SPACE = 32, ENTER = 13};
+enum keyboard_kod { UP_KEY = 0x48, DOWN_KEY = 0x50, LEFT_KEY = 0x4B, RIGHT_KEY = 0x4D, SPACE = 32, ENTER = 13 };
+int  key_code;
 
 int level_choice();
 int opening(int lvl);
 int ending();
 
 
-//Заменить все циферки на буковки (слова) (сделать свой enum)
-
-//По задумке основная функция с которой запускается игра и в которой она проходит. 
+// Запускает интерфейс выбора уровня и возвращает номер выбранного уровня. Если возвращает 0, то было выбрано Exit.
 int menu()
 {
 	bool repeat;
 	do
 	{
 		repeat = 0;
-		int menu_code, menu_choice = 1, level;
+		int menu_choice = 1, level;
 		system("cls");
 		printf("\tSocoban\n\n");
 		printf(">> Start game\nExit\n\npress enter or spacebar to continue");
 
 		do
 		{
-			menu_code = _getch();
-			switch (menu_code)
+			key_code = _getch();
+			switch (key_code)
 			{
 			case 0x48:
 			case 'W':
@@ -56,7 +55,7 @@ int menu()
 			default:
 				break;
 			}
-		} while (menu_code != ENTER and menu_code != SPACE);
+		} while (key_code != ENTER and key_code != SPACE);
 
 		// 1.Start 2.Exit
 		switch (menu_choice)
@@ -68,7 +67,7 @@ int menu()
 				system("cls");
 				repeat = 1;
 			}
-			opening(level);
+			else return level;
 			break;
 
 		case 2:
@@ -89,14 +88,43 @@ int level_choice()
 {
 	system("cls");
 
-	printf("Level 1\n\n#######\n#.....#\n#..@..###\n#.......#\n#...B...#\n#.......#\n###..X..#\n  #.....#\n  #######\n\npress enter or spacebar to continue");
-
-	int lvl_choice = 1, lvl_code;
+	int lvl_choice = 1;
 
 	do
 	{
-		lvl_code = _getch();
-		switch (lvl_code)
+		
+		switch (lvl_choice)
+		{
+		case 0:
+			system("cls");
+
+			printf("Back to Menu\n __________\n|   Scbn   |\n|>Strt     |\n|Ext_______|\n\npress enter or spacebar to continue");
+			break;
+		case 1:
+			system("cls");
+			printf("Level 1\n\n");
+			//openfilelvl(fullstr);
+			printf("\n\npress enter or spacebar to continue");
+			break;
+
+		case 2:
+			system("cls");
+			printf("Level 2\n\n");
+			//openfilelvl(fullstr);
+			printf("\n\npress enter or spacebar to continue");
+			break;
+		
+		case 3:
+			system("cls");
+			printf("Level 3\n\n");
+			//openfilelvl(fullstr);
+			printf("\n\npress enter or spacebar to continue");
+			break;
+		}
+
+		key_code = _getch();
+
+		switch (key_code)
 		{
 		case 0x4B:
 		case 'A':
@@ -124,49 +152,10 @@ int level_choice()
 				lvl_choice += 1;
 			break;
 		}
-
-		switch (lvl_choice)
-		{
-		case 0:
-			system("cls");
-
-			printf("Back to Menu\n __________\n|   Scbn   |\n|>Strt     |\n|Ext_______|\n\npress enter or spacebar to continue");
-			break;
-		case 1:
-			system("cls");
-			printf("Level 1\n\n#######\n#.....#\n#..@..###\n#.......#\n#...B...#\n#.......#\n###..X..#\n  #.....#\n  #######\n\npress enter or spacebar to continue");
-			break;
-
-		case 2:
-			system("cls");
-			printf("Level 2\n\n#######\n#.....#\n#..@..###\n#.......#\n#...[]..#\n#.......#\n###..X..#\n  #.....#\n  #######\n\npress enter or spacebar to continue");
-			break;
-		}
-	} while (lvl_code != ENTER and lvl_code != SPACE);
+	} while (key_code != ENTER and key_code != SPACE);
 
 
-	switch (lvl_choice)
-	{
-	case 0:
-		return 0; break;
-
-	case 1:
-		return 1; break;
-
-	case 2:
-		return 2; break;
-	}
-
-}
-
-//принимает на вход выбраный уровень и запускает его.
-int opening(int lvl)
-{
-	switch (lvl)
-	{
-		//menu
-	case 0: return 0;
-	}
+	return lvl_choice;
 }
 
 //уведомляет об окончании игры и выводит результат с выбором действий.
@@ -175,11 +164,3 @@ int ending()
 
 	return 0;// ЗАГЛУШКА. Если вы её видите, сообщите ответственному за этот участок кода.
 }
-
-/*int main()
-{
-
-	menu();
-
-	return 0;
-}*/
