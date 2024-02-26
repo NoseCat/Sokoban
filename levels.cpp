@@ -1,7 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <iostream>
-#include <string>
+#include <string.h>
 
 enum objects { EMPTY = 1, WALL, PLAYER, BOX, FINISH, NEXTROWS};
 
