@@ -25,7 +25,7 @@ int get_player_input();
 //ѕытаетс€ сдвинуть элемент матрицы в сторону dir
 //так как i идет сверху вниз (; i < rows; i++), и j идет вправо (; j < cols; j++) то в данной системе координат
 //y направлен вниз, x направлен вправо
-void try_move(int y, int x, int dir, bool move_boxes, bool write_history);
+int try_move(int y, int x, int dir, bool move_boxes, bool write_history);
 
 //отмен€ет последнее действие согласно movehistory[]
 void undo();

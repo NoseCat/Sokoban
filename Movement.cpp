@@ -88,10 +88,13 @@ int get_player_input()
 //Пытается сдвинуть элемент матрицы в сторону dir
 //так как i идет сверху вниз (; i < rows; i++), и j идет вправо (; j < cols; j++) то в данной системе координат
 //y направлен вниз, x направлен вправо
-void try_move(int y, int x, int dir, bool move_boxes, bool write_history)
+//возвращает 1 если было движение, 0 если не было
+//-1 если была ошибка, 2 если было взаимодействие с коробкой
+int try_move(int y, int x, int dir, bool move_boxes, bool write_history)
 {
 	int target_y = y;
 	int target_x = x;
+
 
 	//Находим клетку направления движения
 	switch (dir)
@@ -111,14 +114,14 @@ void try_move(int y, int x, int dir, bool move_boxes, bool write_history)
 
 	default:
 		printf("try_move: default\n");
-		return;
+		return -1;
 	}
 
 	//обработка направления движения
 
 	//Стена, здесь же и проверка на выход за границы матрицы
 	if (target_x < 0 || target_x >= cols || target_y < 0 || target_y >= rows || mas[target_y][target_x] == WALL)
-		return;
+		return 0;
 
 	//Пусто
 	if (mas[target_y][target_x] == EMPTY)
@@ -126,22 +129,18 @@ void try_move(int y, int x, int dir, bool move_boxes, bool write_history)
 		if (write_history)
 			movehistory[array_first_empty(movehistory)] = dir;
 		swap(mas[y][x], mas[target_y][target_x]);
-		return;
+		return 1;
 	}
 
 	//Коробка
-	if (mas[target_y][target_x] == BOX)
+	if (move_boxes && mas[target_y][target_x] == BOX && try_move(target_y, target_x, dir, false, false) == 1)
 	{
-		if (move_boxes)
-		{
-			try_move(target_y, target_x, dir, false, false);
-			//Если двигается коробка нужно это отметить
-			try_move(y, x, dir, false, true);
-			movehistory[array_first_empty(movehistory)] = BOXINDICATOR;
-			return;
-		}
-		else { return; }
+		try_move(y, x, dir, false, true);
+		movehistory[array_first_empty(movehistory)] = BOXINDICATOR;
+		return 2;
 	}
+
+	return 0;
 }
 
 //Возвращает направление обратное данному
