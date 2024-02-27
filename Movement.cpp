@@ -11,6 +11,7 @@ const int MAXARRAYLENGTH = 1000;
 int movehistory[MAXARRAYLENGTH] = {};
 
 extern int mas[rows][cols];
+extern int masznach_x[razmaszh];
 
 //меняет местами интовые а и b (такая форма работает только для целочисленых)
 void swap(int& a, int& b)
@@ -250,7 +251,20 @@ void move_player(int dir, char lvl[])
 	}
 }
 
-/* основной цикл
-		dir = get_player_input();
-		move_player(dir);
-*/
+//проверка победы
+bool win_check()
+{
+	for (int i = 0; i < rows; i++)
+		for (int j = 0; j < cols; j++)
+		{
+			if (mas[i][j] == BOX)
+			{
+				for (int k = 0; masznach_x[k] != 0; k += 2)
+				{
+					if (masznach_x[k] != i || masznach_x[k + 1] != j)
+						return false;
+				}
+			}
+		}
+	return true;
+}

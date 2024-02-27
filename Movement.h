@@ -33,4 +33,7 @@ void undo();
 //находит игрока и опредеделяет действие
 void move_player(int dir, char lvl[]);
 
+//проверка победы
+bool win_check();
+
 #endif

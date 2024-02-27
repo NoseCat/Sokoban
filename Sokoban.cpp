@@ -21,8 +21,7 @@ int main()
 
 	int dir = 0;
 
-	//while (win_check())
-	while (true)
+	while (!win_check())
 	{
 		system("cls");
 		displaymatrix();
@@ -33,6 +32,9 @@ int main()
 		dir = get_player_input();
 		move_player(dir, fullstr);
 	}
+	system("cls");
+	displaymatrix();
+
 
 	return 0;
 }

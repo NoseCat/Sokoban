@@ -4,7 +4,7 @@
 
 enum objects { EMPTY = 1, WALL, PLAYER, BOX, FINISH, NEXTROWS };
 
-enum sizes {rows = 20, cols = 20};
+enum sizes {rows = 20, cols = 20, razmaszh = 100};
 
 //int mas[rows][cols];
 
