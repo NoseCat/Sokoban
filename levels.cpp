@@ -3,9 +3,9 @@
 #include <iostream>
 #include <string.h>
 
-enum objects { EMPTY = 1, WALL, PLAYER, BOX, FINISH, NEXTROWS};
+enum objects { EMPTY = 1, WALL, PLAYER, BOX, FINISH, NEXTROWS };
 
-enum sizes { rows = 20, cols = 20, razmaszh=100};
+enum sizes { rows = 20, cols = 20, razmaszh = 100 };
 
 //const int cols = 20, rows = 20;
 int mas[rows][cols];
@@ -17,9 +17,9 @@ void openfilelvl(char* fullstr)
 	char str[100];
 
 	fopen_s(&level, "test.txt", "rt");
-		while (fgets(str, 100, level))
-			strcat(fullstr, str);
-		fclose(level);
+	while (fgets(str, 100, level))
+		strcat(fullstr, str);
+	fclose(level);
 }
 
 void filmas(char str[])
@@ -50,16 +50,16 @@ void filmas(char str[])
 				break;
 			case 'X':
 				masznach_x[mas_x] = i;
-				masznach_x[mas_x+1] = j;
+				masznach_x[mas_x + 1] = j;
 				mas_x += 2;
-				mas[i][j] = FINISH;
+				mas[i][j] = EMPTY;
 
 				break;
 			case'\n':
-			
+
 				mas[i][j] = NEXTROWS;
 				flag = true;
-			
+
 			default:
 				break;
 			}
@@ -73,6 +73,7 @@ void filmas(char str[])
 
 void displaymatrix()
 {
+	bool fulage;
 	for (int i = 0; i < rows; i++)
 	{
 		for (int j = 0; j < cols; j++)
@@ -83,15 +84,15 @@ void displaymatrix()
 				printf("#");
 				break;
 			case EMPTY:
-				bool fulage = false;
-				for (int k = 0; k < razmaszh - 1; k+=2)
+				fulage = false;
+				for (int k = 0; k < razmaszh - 1; k += 2)
 				{
 					if (i == masznach_x[k] and j == masznach_x[k + 1])
 						fulage = true;
 					if (0 == masznach_x[k] and 0 == masznach_x[k + 1])
 						break;
 				}
-				if(fulage)
+				if (fulage)
 					printf("X");
 				else
 					printf(" ");
