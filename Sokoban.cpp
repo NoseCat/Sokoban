@@ -15,7 +15,7 @@ int main()
 
 	char fullstr[1000]{};
 
-	openfilelvl(fullstr);
+	openfilelvl(fullstr, level);
 
 	filmas(fullstr);
 
