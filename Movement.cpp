@@ -217,14 +217,16 @@ void undo()
 //находит игрока и опредеделяет действие
 void move_player(int dir, char lvl[])
 {
+	int histsize;
 	switch (dir)
 	{
 	case STAND:
 		return; break;
 	case RESTART:
 		filmas(lvl, mas);
-		//clear history
-		//restart();
+		histsize = array_first_empty(movehistory);
+		for (int i = 0; i < histsize; i++)
+			movehistory[i] = 0;
 		return; break;
 	case UNDO:
 		undo();

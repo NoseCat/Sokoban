@@ -89,10 +89,10 @@ void displaymatrix()
 				fulage = false;
 				for (int k = 0; k < razmaszh - 1; k += 2)
 				{
-					if (i == masznach_x[k] and j == masznach_x[k + 1])
-						fulage = true;
 					if (0 == masznach_x[k] and 0 == masznach_x[k + 1])
 						break;
+					if (i == masznach_x[k] and j == masznach_x[k + 1])
+						fulage = true;
 				}
 				if (fulage)
 					printf("X");
