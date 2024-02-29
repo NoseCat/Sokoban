@@ -4,9 +4,7 @@
 
 enum objects { EMPTY = 1, WALL, PLAYER, BOX, FINISH, NEXTROWS };
 
-enum sizes {rows = 20, cols = 20, razmaszh = 100};
-
-//int mas[rows][cols];
+enum maxsizes { rows = 64, cols = 64, razmaszh = 16 * 3};
 
 void openfilelvl(char* fullstr, const char lvl_name[]);
 

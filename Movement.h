@@ -2,12 +2,8 @@
 #ifndef _MOVEMENT_H_
 #define _MOVEMENT_H_
 
-//enum arrowkeys { UP_KEY = 0x48, DOWN_KEY = 0x50, LEFT_KEY = 0x4B, RIGHT_KEY = 0x4D };
 enum direction { STAND, UP_DIR, DOWN_DIR, LEFT_DIR, RIGHT_DIR, UNDO, RESTART };
-enum history { BOXINDICATOR = -1 };
-//
-const int MAXARRAYLENGTH = 1000;
-//int movehistory[MAXARRAYLENGTH] = {};
+enum history { BOXINDICATOR = -1, MAXHISTSIZE = 1024};
 
 //меняет местами интовые а и b (такая форма работает только для целочисленых)
 void swap(int& a, int& b);

@@ -5,7 +5,8 @@
 
 enum objects { EMPTY = 1, WALL, PLAYER, BOX, FINISH, NEXTROWS };
 
-enum sizes { rows = 20, cols = 20, razmaszh = 100 };
+enum maxsizes { rows = 64, cols = 64, razmaszh = 16 *3};
+//максимальное количество крестов на поле = razmaszh / 3
 
 //const int cols = 20, rows = 20;
 int mas[rows][cols];
@@ -112,22 +113,6 @@ void displaymatrix()
 				printf("\n");
 				break;
 			}
-			/*
-			if (mas[i][j] == WALL)
-				printf("#");
-			else if (mas[i][j] == EMPTY)
-				printf(" ");
-			else if (mas[i][j] == PLAYER)
-				printf("@");
-			else if (mas[i][j] == BOX)
-				printf("B");
-			else if (mas[i][j] == FINISH)
-				printf("X");
-			else if (mas[i][j] == NEXTROWS)
-				printf("\n");*/
 		}
 	}
 }
-
-/*char fullstr[1000]{};
-openfilelvl(str);*/

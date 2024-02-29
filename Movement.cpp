@@ -5,10 +5,9 @@
 
 //enum arrowkeys { UP_KEY = 0x48, DOWN_KEY = 0x50, LEFT_KEY = 0x4B, RIGHT_KEY = 0x4D };
 enum direction { STAND, UP_DIR, DOWN_DIR, LEFT_DIR, RIGHT_DIR, UNDO, RESTART };
-enum history { BOXINDICATOR = -1 };
+enum history { BOXINDICATOR = -1, MAXHISTSIZE = 1024};
 
-const int MAXARRAYLENGTH = 1000;
-int movehistory[MAXARRAYLENGTH] = {};
+int movehistory[MAXHISTSIZE] = {};
 
 extern int mas[rows][cols];
 extern int masznach_x[razmaszh];
@@ -23,7 +22,7 @@ void swap(int& a, int& b)
 //не примен€ть на неинициализированые массивы!
 int array_first_empty(int array[])
 {
-	for (int i = 0; i < MAXARRAYLENGTH; i++)
+	for (int i = 0; i < MAXHISTSIZE; i++)
 	{
 		if (array[i] == 0)
 			return i;

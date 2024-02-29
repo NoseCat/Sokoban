@@ -29,7 +29,7 @@ int main()
 	int repeat_game = 1;
 	do
 	{
-		for (int i = 0; i < MAXARRAYLENGTH; i++)
+		for (int i = 0; i < MAXHISTSIZE; i++)
 			movehistory[i] = 0;
 
 		char fullstr[1000]{};
