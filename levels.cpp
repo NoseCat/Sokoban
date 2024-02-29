@@ -81,6 +81,7 @@ void displaymatrix()
 	{
 		for (int j = 0; j < cols; j++)
 		{
+			bool fulage;
 			switch (mas[i][j])
 			{
 			case WALL:
