@@ -6,7 +6,7 @@
 enum direction { STAND, UP_DIR, DOWN_DIR, LEFT_DIR, RIGHT_DIR, UNDO, RESTART };
 enum history { BOXINDICATOR = -1 };
 //
-//const int MAXARRAYLENGTH = 1000;
+const int MAXARRAYLENGTH = 1000;
 //int movehistory[MAXARRAYLENGTH] = {};
 
 //меняет местами интовые а и b (такая форма работает только для целочисленых)

@@ -8,8 +8,8 @@ enum sizes {rows = 20, cols = 20, razmaszh = 100};
 
 //int mas[rows][cols];
 
-void openfilelvl(char* str, int num_lvl);
+void openfilelvl(char* fullstr, const char lvl_name[]);
 
-void filmas(char str[]);
+void filmas(char str[], int mass[][cols]);
 void displaymatrix();
 #endif

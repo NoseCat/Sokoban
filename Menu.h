@@ -6,7 +6,7 @@
 enum keyboard_kod { UP_KEY = 0x48, DOWN_KEY = 0x50, LEFT_KEY = 0x4B, RIGHT_KEY = 0x4D, SPACE = 32, ENTER = 13 };
 
 // Запускает интерфейс выбора уровня и возвращает номер выбранного уровня. Если возвращает 0, то было выбрано Exit.
-int menu();
+int menu(bool skip);
 
 //интерфейс выбора уровня и возможный его предпоказ.
 int level_choice();

@@ -11,21 +11,23 @@ enum sizes { rows = 20, cols = 20, razmaszh = 100 };
 int mas[rows][cols];
 
 int masznach_x[razmaszh];
-void openfilelvl(char* fullstr)
+void openfilelvl(char* fullstr, const char lvl_name[])
 {
 	FILE* level;
 	char str[100];
 
-	fopen_s(&level, "test.txt", "rt");
+	if (fopen_s(&level, lvl_name, "rt") != 0)
+		system("pause");
 	while (fgets(str, 100, level))
 		strcat(fullstr, str);
 	fclose(level);
 }
 
-void filmas(char str[])
+void filmas(char str[], int mass[][cols])
 {
 	int counterstr = -1;
-	masznach_x[razmaszh] = {};
+	for (int i = 0; i < razmaszh; i++)
+		masznach_x[i] = 0;
 	int mas_x = 0;
 	for (int i = 0; i < rows; i++)
 	{
@@ -36,28 +38,28 @@ void filmas(char str[])
 			switch (str[counterstr])
 			{
 			case '#':
-				mas[i][j] = WALL;
+				mass[i][j] = WALL;
 				break;
 			case '.':
 			case ' ':
-				mas[i][j] = EMPTY;
+				mass[i][j] = EMPTY;
 				break;
 			case '@':
-				mas[i][j] = PLAYER;
+				mass[i][j] = PLAYER;
 				break;
 			case 'B':
-				mas[i][j] = BOX;
+				mass[i][j] = BOX;
 				break;
 			case 'X':
 				masznach_x[mas_x] = i;
 				masznach_x[mas_x + 1] = j;
 				mas_x += 2;
-				mas[i][j] = EMPTY;
+				mass[i][j] = EMPTY;
 
 				break;
 			case'\n':
 
-				mas[i][j] = NEXTROWS;
+				mass[i][j] = NEXTROWS;
 				flag = true;
 
 			default:

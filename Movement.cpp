@@ -222,7 +222,7 @@ void move_player(int dir, char lvl[])
 	case STAND:
 		return; break;
 	case RESTART:
-		filmas(lvl);
+		filmas(lvl, mas);
 		//clear history
 		//restart();
 		return; break;

@@ -12,63 +12,70 @@ int  key_code;
 int level_choice();
 
 // Запускает интерфейс выбора уровня и возвращает номер выбранного уровня. Если возвращает 0, то было выбрано Exit.
-int menu()
+int menu(bool skip)
 {
 	//переменная для для выхода в меню.
 	bool repeat;
 	do
 	{
 		repeat = 0;
-		
+
 		//menu_choice - выбраный пункт меню. level - результат level_choice(), чтобы избежать повторного вызова.
 		int menu_choice = 1, level;
 
 		do
 		{
-			// 1.Start 2.Exit
-			switch (menu_choice)
+			if (skip == 0)
 			{
-			case 1:
-				system("cls");
-				printf("\tSocoban\n\n");
-				printf(">> Start game\nExit\n\npress enter or spacebar to continue");
-				break;
+				// 1.Start 2.Exit
+				switch (menu_choice)
+				{
+				case 1:
+					system("cls");
+					printf("\tSocoban\n\n");
+					printf(">> Start game\nExit\n\npress enter or spacebar to continue");
+					break;
 
-			case 2:
-				system("cls");
-				printf("\tSocoban\n\n");
-				printf("Start game\n>> Exit\n\npress enter or spacebar to continue");
-				break;
+				case 2:
+					system("cls");
+					printf("\tSocoban\n\n");
+					printf("Start game\n>> Exit\n\npress enter or spacebar to continue");
+					break;
 
-			default:
-				system("cls");
-				printf("error: menu's switch.");
-				break;
+				default:
+					system("cls");
+					printf("error: menu's switch.");
+					break;
+				}
+
+				key_code = _getch();
+				switch (key_code)
+				{
+				case UP_KEY:
+				case 'W':
+				case 'w':
+				case 'Ц':
+				case 'ц':
+					menu_choice = 1;
+					break;
+
+				case DOWN_KEY:
+				case 'S':
+				case 's':
+				case 'Ы':
+				case 'ы':
+					menu_choice = 2;
+					break;
+
+				default:
+					break;
+				}
 			}
-			
-			key_code = _getch();
-			switch (key_code)
+			else
 			{
-			case UP_KEY:
-			case 'W':
-			case 'w':
-			case 'Ц':
-			case 'ц':
-				menu_choice = 1;
-				break;
-
-			case DOWN_KEY:
-			case 'S':
-			case 's':
-			case 'Ы':
-			case 'ы':
-				menu_choice = 2;
-				break;
-
-			default:
-				break;
+				skip = 0;
+				key_code = ENTER;
 			}
-
 		} while (key_code != ENTER and key_code != SPACE);
 
 		// если выбран Exit.
@@ -97,7 +104,7 @@ int level_choice()
 
 	do
 	{
-		
+
 		switch (lvl_choice)
 		{
 		case 0:
@@ -118,7 +125,7 @@ int level_choice()
 			//openfilelvl(fullstr);
 			printf("\n\npress enter or spacebar to continue");
 			break;
-		
+
 		case 3:
 			system("cls");
 			printf("Level 3\n\n");
@@ -166,6 +173,59 @@ int level_choice()
 //уведомляет об окончании игры и выводит результат с выбором действий.
 int ending()
 {
+	int ending_choice = 1;
+	system("cls");
+	do
+	{
+		switch (ending_choice)
+		{
+		case 1:
+			system("cls");
+			printf("\tLevel completed!\n\n>> Exit to main menu.\nSelect level.\nQuit the game.\n");
+			break;
 
-	return 0;// ЗАГЛУШКА. Если вы её видите, сообщите ответственному за этот участок кода.
+		case 2:
+			system("cls");
+			printf("\tLevel completed!\n\nExit to main menu.\n>> Select level.\nQuit the game.\n");
+			break;
+
+		case 3:
+			system("cls");
+			printf("\tLevel completed!\n\nExit to main menu.\nSelect level.\n>> Quit the game.\n");
+			break;
+
+		default:
+			system("cls");
+			printf("error: switch(ending_choice) in ending()\n");
+			system("pause");
+			break;
+		}
+
+		key_code = _getch();
+		switch (key_code)
+		{
+		case UP_KEY:
+		case 'W':
+		case 'w':
+		case 'Ц':
+		case 'ц':
+			if (ending_choice > 1)
+				ending_choice--;
+			break;
+
+		case DOWN_KEY:
+		case 'S':
+		case 's':
+		case 'Ы':
+		case 'ы':
+			if (ending_choice < 3)
+				ending_choice++;
+			break;
+
+		default:
+			break;
+		}
+	} while (key_code != ENTER and key_code != SPACE);
+
+	return ending_choice;
 }
