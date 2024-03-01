@@ -5,15 +5,12 @@
 #include "Levels.h"
 #include "Movement.h"
 
+extern int realrows, realcols;
 
 extern int movehistory[];
 extern int masznach_x[razmaszh];
 extern int mas[rows][cols];
 
-
-
-// находится в Menu.cpp Menu.h.
-//extern const int char_size;
 extern char lvl1[];
 extern char lvl2[];
 extern char lvl3[];
@@ -71,31 +68,26 @@ int main()
 		switch (level)
 		{
 		case 1:
-			filmas(lvl1);
 			for (int i = 0; i < 1000; i++)
 				fullstr[i] = lvl1[i];
 			break;
 
 		case 2:
-			filmas(lvl2);
 			for (int i = 0; i < 1000; i++)
 				fullstr[i] = lvl2[i];
 			break;
 
 		case 3:
-			filmas(lvl3);
 			for (int i = 0; i < 1000; i++)
 				fullstr[i] = lvl3[i];
 			break;
 
 		case 4:
-			filmas(lvl4);
 			for (int i = 0; i < 1000; i++)
 				fullstr[i] = lvl4[i];
 			break;
 
 		case 5:
-			filmas(lvl5);
 			for (int i = 0; i < 1000; i++)
 				fullstr[i] = lvl5[i];
 			break;
@@ -118,8 +110,9 @@ int main()
 			break;
 		}
 
+		find_rows_cols(fullstr);
+		filmas(fullstr);
 
-		// 40 строка определение, 121 строка использование.
 		if (start_game == 1)
 		{
 			int dir = 0;
@@ -129,8 +122,8 @@ int main()
 				system("cls");
 				displaymatrix();
 
-				for (int i = 0; movehistory[i]; i++)
-					printf("%i", movehistory[i]);
+				//for (int i = 0; movehistory[i]; i++)
+					//printf("%i", movehistory[i]);
 
 				dir = get_player_input();
 				move_player(dir, fullstr);

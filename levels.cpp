@@ -13,6 +13,10 @@ int mas[rows][cols];
 int znach_x = 3;
 int masznach_x[razmaszh];
 
+int targets;
+
+int realrows = rows, realcols = cols;
+
 // Теперь возвращает: 0 - файл открылся, 1 - не получилось открыть файл.
 bool openfilelvl(char* fullstr, const char lvl_name[])
 {
@@ -29,7 +33,9 @@ bool openfilelvl(char* fullstr, const char lvl_name[])
 }
 void find_rows_cols(char* fullstr)
 {
-	int rows = 1, cols = 0, leg = 0;
+	realrows = 1;
+	realcols = 0;
+	int leg = 0;
 	int n = strlen(fullstr);
 
 	for (int i = 0; i < n; i++)
@@ -37,18 +43,18 @@ void find_rows_cols(char* fullstr)
 		leg++;
 		if (fullstr[i] == '\n')
 		{
-			cols = fmax(cols, leg);
-			rows++;
+			realcols = fmax(realcols, leg);
+			realrows++;
 			leg = 0;
 		}
 	}
-	//
 }
 void filmas(char str[])
 {
+	targets = 0;
 	int counterstr = -1;
 	for (int i = 0; i < razmaszh; i++)
-		masznach_x[i] = 0;
+		masznach_x[i] = -1;
 	int mas_x = 0;
 	for (int i = 0; i < rows; i++)
 	{
@@ -105,6 +111,7 @@ void filmas(char str[])
 				masznach_x[mas_x + 1] = j;
 				
 				mas_x += znach_x;
+				targets++;
 				mas[i][j] = EMPTY;
 
 				break;

@@ -5,9 +5,11 @@
 
 //enum arrowkeys { UP_KEY = 0x48, DOWN_KEY = 0x50, LEFT_KEY = 0x4B, RIGHT_KEY = 0x4D };
 enum direction { STAND, UP_DIR, DOWN_DIR, LEFT_DIR, RIGHT_DIR, UNDO, RESTART };
-enum history { BOXINDICATOR = -1, MAXHISTSIZE = 1024};
+enum history { BOXINDICATOR = -1, MAXHISTSIZE = 1024 };
 
 int movehistory[MAXHISTSIZE] = {};
+
+extern int realrows, realcols, targets;
 
 extern int mas[rows][cols];
 extern int masznach_x[razmaszh];
@@ -120,7 +122,7 @@ int try_move(int y, int x, int dir, bool move_boxes, bool write_history)
 	//обработка направления движения
 
 	//Стена, здесь же и проверка на выход за границы матрицы
-	if (target_x < 0 || target_x >= cols || target_y < 0 || target_y >= rows || mas[target_y][target_x] == WALL)
+	if (target_x < 0 || target_x >= realcols || target_y < 0 || target_y >= realrows || mas[target_y][target_x] == WALL)
 		return 0;
 
 	//Пусто
@@ -133,7 +135,7 @@ int try_move(int y, int x, int dir, bool move_boxes, bool write_history)
 	}
 
 	//Коробка
-	if (move_boxes && (mas[target_y][target_x] == WHITEBOX|| mas[target_y][target_x] == REDBOX || mas[target_y][target_x] == GREENBOX || mas[target_y][target_x] == BLUEBOX ) && try_move(target_y, target_x, dir, false, false) == 1)
+	if (move_boxes && (mas[target_y][target_x] == WHITEBOX || mas[target_y][target_x] == REDBOX || mas[target_y][target_x] == GREENBOX || mas[target_y][target_x] == BLUEBOX) && try_move(target_y, target_x, dir, false, false) == 1)
 	{
 		try_move(y, x, dir, false, true);
 		movehistory[array_first_empty(movehistory)] = BOXINDICATOR;
@@ -199,8 +201,8 @@ void undo()
 
 	int backdir = reverse_direction(movehistory[firstempty - 1]);
 
-	for (int i = 0; i < rows; i++)
-		for (int j = 0; j < cols; j++)
+	for (int i = 0; i < realrows; i++)
+		for (int j = 0; j < realcols; j++)
 		{
 			if (mas[i][j] == PLAYER)
 			{
@@ -235,8 +237,8 @@ void move_player(int dir, char lvl[])
 	case LEFT_DIR:
 	case RIGHT_DIR:
 
-		for (int i = 0; i < rows; i++)
-			for (int j = 0; j < cols; j++)
+		for (int i = 0; i < realrows; i++)
+			for (int j = 0; j < realcols; j++)
 			{
 				if (mas[i][j] == PLAYER)
 				{
@@ -255,17 +257,35 @@ void move_player(int dir, char lvl[])
 //проверка победы
 bool win_check()
 {
-	for (int i = 0; i < rows; i++)
-		for (int j = 0; j < cols; j++)
+	int s = 0;
+	for (int k = 0; k < targets*3; k += 3)
+	{
+		switch (masznach_x[k + 2])
 		{
-			if ((mas[i][j] == WHITEBOX || mas[i][j] == REDBOX || mas[i][j] == GREENBOX || mas[i][j] == BLUEBOX))
-			{
-				for (int k = 0; masznach_x[k] != 0; k += 2)
-				{
-					if (masznach_x[k] != i || masznach_x[k + 1] != j)
-						return false;
-				}
-			}
+		case white:
+			if (mas[masznach_x[k]][masznach_x[k + 1]] == WHITEBOX || 
+				mas[masznach_x[k]][masznach_x[k + 1]] == REDBOX || 
+				mas[masznach_x[k]][masznach_x[k + 1]] == GREENBOX ||
+				mas[masznach_x[k]][masznach_x[k + 1]] == BLUEBOX )
+				s++;
+			break;
+		case red:
+			if (mas[masznach_x[k]][masznach_x[k + 1]] == REDBOX)
+				s++;
+			break;
+		case green:
+			if (mas[masznach_x[k]][masznach_x[k + 1]] == GREENBOX)
+				s++;
+			break;
+		case blue:
+			if (mas[masznach_x[k]][masznach_x[k + 1]] == BLUEBOX)
+				s++;
+			break;
 		}
-	return true;
+	}
+
+	if (s == targets)
+		return true;
+	else
+		return false;
 }
