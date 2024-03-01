@@ -222,7 +222,7 @@ void move_player(int dir, char lvl[])
 	case STAND:
 		return; break;
 	case RESTART:
-		filmas(lvl, mas);
+		filmas(lvl);
 		histsize = array_first_empty(movehistory);
 		for (int i = 0; i < histsize; i++)
 			movehistory[i] = 0;

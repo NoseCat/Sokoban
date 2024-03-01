@@ -12,6 +12,7 @@ enum maxsizes { rows = 64, cols = 64, razmaszh = 16 *3};
 int mas[rows][cols];
 int znach_x = 3;
 int masznach_x[razmaszh];
+
 // Теперь возвращает: 0 - файл открылся, 1 - не получилось открыть файл.
 bool openfilelvl(char* fullstr, const char lvl_name[])
 {
@@ -43,7 +44,7 @@ void find_rows_cols(char* fullstr)
 	}
 	//
 }
-void filmas(char str[], int mass[][cols])
+void filmas(char str[])
 {
 	int counterstr = -1;
 	for (int i = 0; i < razmaszh; i++)
@@ -68,16 +69,16 @@ void filmas(char str[], int mass[][cols])
 				mas[i][j] = PLAYER;
 				break;
 			case 'w':
-				mass[i][j] = WHITEBOX;
+				mas[i][j] = WHITEBOX;
 				break;
 			case 'r':
-				mass[i][j] = REDBOX;
+				mas[i][j] = REDBOX;
 				break;
 			case 'g':
-				mass[i][j] = GREENBOX;
+				mas[i][j] = GREENBOX;
 				break;
 			case 'b':
-				mass[i][j] = BLUEBOX;
+				mas[i][j] = BLUEBOX;
 				break;
 			case 'W':
 			case 'X':
@@ -104,7 +105,7 @@ void filmas(char str[], int mass[][cols])
 				masznach_x[mas_x + 1] = j;
 				
 				mas_x += znach_x;
-				mass[i][j] = EMPTY;
+				mas[i][j] = EMPTY;
 
 				break;
 			case'\n':

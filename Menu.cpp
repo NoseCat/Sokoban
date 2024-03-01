@@ -270,7 +270,7 @@ int ending()
 
 void clear_history(int movehistory[])
 {
-	for (int i = 0; i < MAXARRAYLENGTH; i++)
+	for (int i = 0; i < MAXHISTSIZE; i++)
 		movehistory[i] = 0;
 }
 
