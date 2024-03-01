@@ -23,7 +23,23 @@ void openfilelvl(char* fullstr, const char lvl_name[])
 		strcat(fullstr, str);
 	fclose(level);
 }
+void find_rows_cols(char* fullstr)
+{
+	int rows = 1, cols = 0, leg = 0;
+	int n = strlen(fullstr);
 
+	for (int i = 0; i < n; i++)
+	{
+		leg++;
+		if (fullstr[i] == '\n')
+		{
+			cols = fmax(cols, leg);
+			rows++;
+			leg = 0;
+		}
+	}
+	//
+}
 void filmas(char str[], int mass[][cols])
 {
 	int counterstr = -1;
