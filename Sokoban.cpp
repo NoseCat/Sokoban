@@ -27,10 +27,10 @@ int main()
 	system("chcp 1251 > nul");
 
 	openfilelvl(lvl1, "test.txt");
-	openfilelvl(lvl2, "lvl1.txt");
-	openfilelvl(lvl3, "lvl2.txt");
-	openfilelvl(lvl4, ".txt"); //----------------------------------------------------------------------- !
-	openfilelvl(lvl5, ".txt"); //----------------------------------------------------------------------- !
+	openfilelvl(lvl2, "lvl2.txt");
+	openfilelvl(lvl3, "lvl3.txt");
+	openfilelvl(lvl4, "lvl4.txt");
+	openfilelvl(lvl5, "lvl5.txt");
 
 	int repeat_game = 1;
 	do

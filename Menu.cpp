@@ -150,14 +150,14 @@ int level_choice()
 		case 4:
 			system("cls");
 			printf("Level 4\n\n");
-			printf(lvl3); //----------------------------------------------------------------------- !
+			printf(lvl4);
 			printf("\n\npress enter or spacebar to continue");
 			break;
 
 		case 5:
 			system("cls");
 			printf("Level 5\n\n");
-			printf(lvl3); //----------------------------------------------------------------------- !
+			printf(lvl5); //----------------------------------------------------------------------- !
 			printf("\n\npress enter or spacebar to continue");
 			break;
 
