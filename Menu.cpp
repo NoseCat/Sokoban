@@ -93,7 +93,7 @@ int menu(bool skip)
 		} while (key_code != ENTER and key_code != SPACE);
 
 		// если выбран Exit.
-		if (menu_choice == 2) return 0;
+		if (menu_choice == 2) exit(0);
 
 		// вызов интерфейса выбора уровня.
 		level = level_choice();
@@ -220,15 +220,15 @@ int ending()
 		switch (ending_choice)
 		{
 		case 1:
-			printf("\tLevel completed!\n\nMoves: %i\n\n>> Exit to main menu.\nSelect level.\nQuit the game.\n", moves);
+			printf("\n\tLevel completed!\n\nMoves: %i\n\n>> Exit to main menu.\nSelect level.\nQuit the game.\n", moves);
 			break;
 
 		case 2:
-			printf("\tLevel completed!\n\nMoves: %i\n\nExit to main menu.\n>> Select level.\nQuit the game.\n", moves);
+			printf("\n\tLevel completed!\n\nMoves: %i\n\nExit to main menu.\n>> Select level.\nQuit the game.\n", moves);
 			break;
 
 		case 3:
-			printf("\tLevel completed!\n\nMoves: %i\n\nExit to main menu.\nSelect level.\n>> Quit the game.\n", moves);
+			printf("\n\tLevel completed!\n\nMoves: %i\n\nExit to main menu.\nSelect level.\n>> Quit the game.\n", moves);
 			break;
 
 		default:
@@ -305,7 +305,7 @@ int player_lvl(char* fullstr)
 		scanf_s("%s", &name_player_lvl, size_name);
 
 
-		for (int i = 0; i < size_name; i++)
+		for (int i = 0; i < size_name - 3; i++)
 		{
 			if (name_player_lvl[i] == '.' && name_player_lvl[i + 1] == 't' && name_player_lvl[i + 2] == 'x' && name_player_lvl[i + 3] == 't')
 				type_missing = 0;

@@ -22,7 +22,11 @@ extern char* lvl5;
 int main()
 {
 	system("chcp 1251 > nul");
-
+	mas = (int**)malloc(realrows * sizeof(int*)); // макс: 64*64*4 + 64*4(?) = 16 + 0,25 кб
+	for (int i = 0; i < realrows; i++)
+	{
+		mas[i] = (int*)malloc(realcols * sizeof(int));
+	}
 	lvl1 = (char*)malloc(char_size * sizeof(char)); //4096 * 1 = 4 кб
 	lvl2 = (char*)malloc(char_size * sizeof(char)); //4096 * 1 = 4 кб
 	lvl3 = (char*)malloc(char_size * sizeof(char)); //4096 * 1 = 4 кб
@@ -117,11 +121,6 @@ int main()
 		}
 
 		find_rows_cols(fullstr);
-		mas = (int**)malloc(realrows * sizeof(int*)); // макс: 64*64*4 + 64*4(?) = 16 + 0,25 кб
-		for (int i = 0; i < realrows; i++)
-		{
-			mas[i] = (int*)malloc(realcols * sizeof(int));
-		}
 		filmas(fullstr);
 		movehistory = (int*)malloc(MAXHISTSIZE * sizeof(int)); //1024 * 4 = 4 кб
 		clear_history(movehistory);
@@ -135,8 +134,8 @@ int main()
 				system("cls");
 				displaymatrix();
 
-				for (int i = 0; movehistory[i]; i++)
-					printf("%i", movehistory[i]);
+				/*for (int i = 0; movehistory[i]; i++)
+					printf("%i", movehistory[i]);*/
 
 				dir = get_player_input();
 				move_player(dir);
