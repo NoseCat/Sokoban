@@ -133,7 +133,7 @@ int try_move(int y, int x, int dir, bool move_boxes, bool write_history)
 	}
 
 	//Коробка
-	if (move_boxes && mas[target_y][target_x] == BOX && try_move(target_y, target_x, dir, false, false) == 1)
+	if (move_boxes && (mas[target_y][target_x] == WHITEBOX|| mas[target_y][target_x] == REDBOX || mas[target_y][target_x] == GREENBOX || mas[target_y][target_x] == BLUEBOX ) && try_move(target_y, target_x, dir, false, false) == 1)
 	{
 		try_move(y, x, dir, false, true);
 		movehistory[array_first_empty(movehistory)] = BOXINDICATOR;
@@ -258,7 +258,7 @@ bool win_check()
 	for (int i = 0; i < rows; i++)
 		for (int j = 0; j < cols; j++)
 		{
-			if (mas[i][j] == BOX)
+			if ((mas[i][j] == WHITEBOX || mas[i][j] == REDBOX || mas[i][j] == GREENBOX || mas[i][j] == BLUEBOX))
 			{
 				for (int k = 0; masznach_x[k] != 0; k += 2)
 				{

@@ -61,12 +61,14 @@ void filmas(char str[], int mass[][cols])
 				mass[i][j] = BLUEBOX;
 				break;
 			case 'W':
+			case 'X':
 			case 'R':
 			case 'G':
 			case 'B':
 				switch (str[counterstr])
 				{
 				case 'W':
+				case 'X':
 					masznach_x[mas_x + 2] = white;
 					break;
 				case 'R':
@@ -125,16 +127,17 @@ void displaymatrix()
 						break;
 					if (i == masznach_x[k] and j == masznach_x[k + 1])
 					{
+						color_x = masznach_x[k + 2];
 						fulage = true;
-
+						break;
 					}
 				}
 				if (fulage)
 				{
-					SetConsoleTextAttribute(hwnd, masznach_x[color_x]);
+					SetConsoleTextAttribute(hwnd, color_x);
 					printf("X");
 					SetConsoleTextAttribute(hwnd, white);
-					color_x += znach_x;
+				
 				}
 				else
 					printf(" ");

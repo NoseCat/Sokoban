@@ -2,7 +2,7 @@
 #ifndef _LEVELS_H_
 #define _LEVELS_H_
 
-enum objects { EMPTY = 1, WALL, PLAYER, BOX, FINISH, NEXTROWS };
+enum objects { EMPTY = 1, WALL, PLAYER, WHITEBOX, REDBOX, GREENBOX, BLUEBOX, FINISH, NEXTROWS };
 
 enum maxsizes { rows = 64, cols = 64, razmaszh = 16 * 3};
 
