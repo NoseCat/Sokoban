@@ -2,9 +2,6 @@
 #ifndef _MOVEMENT_H_
 #define _MOVEMENT_H_
 
-enum direction { STAND, UP_DIR, DOWN_DIR, LEFT_DIR, RIGHT_DIR, UNDO, RESTART };
-enum history { BOXINDICATOR = -1, MAXHISTSIZE = 1024};
-
 //меняет местами интовые а и b (такая форма работает только для целочисленых)
 void swap(int& a, int& b);
 
@@ -27,7 +24,7 @@ int try_move(int y, int x, int dir, bool move_boxes, bool write_history);
 void undo();
 
 //находит игрока и опредеделяет действие
-void move_player(int dir, char lvl[]);
+void move_player(int dir);
 
 //проверка победы
 bool win_check();

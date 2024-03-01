@@ -2,24 +2,24 @@
 #include <conio.h>
 #include "Levels.h"
 #include "Movement.h"
+#include "Enums.h"
+
+extern int moves;
 
 // предполагаемый максимум уровней.
 const int max_lvl = 6;
 // максимально допустимая длинна названия уровня.
 const int size_name = 256;
 
-// коды кнопок.
-enum keyboard_kod { UP_KEY = 0x48, DOWN_KEY = 0x50, LEFT_KEY = 0x4B, RIGHT_KEY = 0x4D, SPACE = 32, ENTER = 13, BACK_SLASH = 92 };
 // переменная, в которую записывается код клавиши.
 int  key_code;
 
 // Для отрисовки уровней при выборе.
-const int char_size = 4096;
-char lvl1[char_size]{};
-char lvl2[char_size]{};
-char lvl3[char_size]{};
-char lvl4[char_size]{};
-char lvl5[char_size]{};
+char* lvl1;
+char* lvl2;
+char* lvl3;
+char* lvl4;
+char* lvl5;
 
 // нужно, чтобы menu() видело идущую после неё функцию.
 int level_choice();
@@ -215,21 +215,20 @@ int ending()
 	system("cls");
 	do
 	{
+		system("cls");
+		displaymatrix();
 		switch (ending_choice)
 		{
 		case 1:
-			system("cls");
-			printf("\tLevel completed!\n\n>> Exit to main menu.\nSelect level.\nQuit the game.\n");
+			printf("\tLevel completed!\n\nMoves: %i\n\n>> Exit to main menu.\nSelect level.\nQuit the game.\n", moves);
 			break;
 
 		case 2:
-			system("cls");
-			printf("\tLevel completed!\n\nExit to main menu.\n>> Select level.\nQuit the game.\n");
+			printf("\tLevel completed!\n\nMoves: %i\n\nExit to main menu.\n>> Select level.\nQuit the game.\n", moves);
 			break;
 
 		case 3:
-			system("cls");
-			printf("\tLevel completed!\n\nExit to main menu.\nSelect level.\n>> Quit the game.\n");
+			printf("\tLevel completed!\n\nMoves: %i\n\nExit to main menu.\nSelect level.\n>> Quit the game.\n", moves);
 			break;
 
 		default:
@@ -268,7 +267,7 @@ int ending()
 	return ending_choice;
 }
 
-void clear_history(int movehistory[])
+void clear_history(int* movehistory)
 {
 	for (int i = 0; i < MAXHISTSIZE; i++)
 		movehistory[i] = 0;

@@ -3,18 +3,13 @@
 #include <iostream>
 #include <string.h>
 
-enum objects { EMPTY = 1, WALL, PLAYER, WHITEBOX, REDBOX, GREENBOX, BLUEBOX, FINISH, NEXTROWS };
-enum color { white = 7,red=12,green=10,blue=9 };
-enum maxsizes { rows = 64, cols = 64, razmaszh = 16 *3};
-//максимальное количество крестов на поле = razmaszh / 3
+#include "Enums.h"
 
-//const int cols = 20, rows = 20;
-int mas[rows][cols];
-int znach_x = 3;
-int masznach_x[razmaszh];
+int** mas;
+int* masznach_x;
 
 int targets;
-
+int znach_x = 3;
 int realrows = rows, realcols = cols;
 
 // “еперь возвращает: 0 - файл открылс€, 1 - не получилось открыть файл.
@@ -53,13 +48,15 @@ void filmas(char str[])
 {
 	targets = 0;
 	int counterstr = -1;
+	masznach_x = (int*)malloc(razmaszh * sizeof(int)); //16 * 3 * 4 = 192 байта
 	for (int i = 0; i < razmaszh; i++)
 		masznach_x[i] = -1;
+
 	int mas_x = 0;
-	for (int i = 0; i < rows; i++)
+	for (int i = 0; i < realrows; i++)
 	{
 		bool flag = false;
-		for (int j = 0; j < cols; j++)
+		for (int j = 0; j < realcols; j++)
 		{
 			counterstr++;
 			switch (str[counterstr])
@@ -136,9 +133,9 @@ void displaymatrix()
 	HANDLE hwnd = GetStdHandle(STD_OUTPUT_HANDLE);
 	bool fulage;
 	int color_x = 2;
-	for (int i = 0; i < rows; i++)
+	for (int i = 0; i < realrows; i++)
 	{
-		for (int j = 0; j < cols; j++)
+		for (int j = 0; j < realcols; j++)
 		{
 			
 			switch (mas[i][j])

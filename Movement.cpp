@@ -2,17 +2,15 @@
 #include <conio.h>
 #include "Levels.h"
 #include "Menu.h"
+#include "Enums.h"
 
-//enum arrowkeys { UP_KEY = 0x48, DOWN_KEY = 0x50, LEFT_KEY = 0x4B, RIGHT_KEY = 0x4D };
-enum direction { STAND, UP_DIR, DOWN_DIR, LEFT_DIR, RIGHT_DIR, UNDO, RESTART };
-enum history { BOXINDICATOR = -1, MAXHISTSIZE = 1024 };
-
-int movehistory[MAXHISTSIZE] = {};
+int* movehistory;
+int moves;
 
 extern int realrows, realcols, targets;
-
-extern int mas[rows][cols];
-extern int masznach_x[razmaszh];
+extern int** mas;
+extern int* masznach_x;
+extern char* fullstr;
 
 //меняет местами интовые а и b (такая форма работает только для целочисленых)
 void swap(int& a, int& b)
@@ -129,7 +127,10 @@ int try_move(int y, int x, int dir, bool move_boxes, bool write_history)
 	if (mas[target_y][target_x] == EMPTY)
 	{
 		if (write_history)
+		{
+			moves++;
 			movehistory[array_first_empty(movehistory)] = dir;
+		}
 		swap(mas[y][x], mas[target_y][target_x]);
 		return 1;
 	}
@@ -168,6 +169,8 @@ void undo()
 	int firstempty = array_first_empty(movehistory);
 	if (firstempty == 0)
 		return;
+
+	moves--;
 
 	int box_y = 0;
 	int box_x = 0;
@@ -216,7 +219,7 @@ void undo()
 }
 
 //находит игрока и опредеделяет действие
-void move_player(int dir, char lvl[])
+void move_player(int dir)
 {
 	int histsize;
 	switch (dir)
@@ -224,7 +227,8 @@ void move_player(int dir, char lvl[])
 	case STAND:
 		return; break;
 	case RESTART:
-		filmas(lvl);
+		filmas(fullstr);
+		moves = 0;
 		histsize = array_first_empty(movehistory);
 		for (int i = 0; i < histsize; i++)
 			movehistory[i] = 0;
