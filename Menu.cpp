@@ -1,15 +1,29 @@
 #include <iostream>
 #include <conio.h>
+#include "Levels.h"
+#include "Movement.h"
 
 // предполагаемый максимум уровней.
-const int max_lvl = 3;
+const int max_lvl = 6;
+// максимально допустимая длинна названия уровня.
+const int size_name = 256;
 
 // коды кнопок.
-enum keyboard_kod { UP_KEY = 0x48, DOWN_KEY = 0x50, LEFT_KEY = 0x4B, RIGHT_KEY = 0x4D, SPACE = 32, ENTER = 13 };
+enum keyboard_kod { UP_KEY = 0x48, DOWN_KEY = 0x50, LEFT_KEY = 0x4B, RIGHT_KEY = 0x4D, SPACE = 32, ENTER = 13, BACK_SLASH = 92 };
 // переменная, в которую записывается код клавиши.
 int  key_code;
 
+// Для отрисовки уровней при выборе.
+const int char_size = 4096;
+char lvl1[char_size]{};
+char lvl2[char_size]{};
+char lvl3[char_size]{};
+char lvl4[char_size]{};
+char lvl5[char_size]{};
+
+// нужно, чтобы menu() видело идущую после неё функцию.
 int level_choice();
+int error_player_lvl();
 
 // Запускает интерфейс выбора уровня и возвращает номер выбранного уровня. Если возвращает 0, то было выбрано Exit.
 int menu(bool skip)
@@ -115,21 +129,45 @@ int level_choice()
 		case 1:
 			system("cls");
 			printf("Level 1\n\n");
-			//openfilelvl(fullstr);
+			printf(lvl1);
 			printf("\n\npress enter or spacebar to continue");
 			break;
 
 		case 2:
 			system("cls");
 			printf("Level 2\n\n");
-			//openfilelvl(fullstr);
+			printf(lvl2);
 			printf("\n\npress enter or spacebar to continue");
 			break;
 
 		case 3:
 			system("cls");
 			printf("Level 3\n\n");
-			//openfilelvl(fullstr);
+			printf(lvl3);
+			printf("\n\npress enter or spacebar to continue");
+			break;
+
+		case 4:
+			system("cls");
+			printf("Level 4\n\n");
+			printf(lvl3); //----------------------------------------------------------------------- !
+			printf("\n\npress enter or spacebar to continue");
+			break;
+
+		case 5:
+			system("cls");
+			printf("Level 5\n\n");
+			printf(lvl3); //----------------------------------------------------------------------- !
+			printf("\n\npress enter or spacebar to continue");
+			break;
+
+		case 6:
+			system("cls");
+			printf("Your level\n\n");
+
+			printf("  #####\n ##   ##\n## X   ##\n\t#\n     B ##\n      ##\n    ##\n   ##\n\n   @");
+			//printf("###########\n###.....###\n##..###..##\n#..#####..#\n#@######B.#\n########..#\n#######..##\n######..###\n#####..####\n#####X#####\n#####.#####\n###########");
+
 			printf("\n\npress enter or spacebar to continue");
 			break;
 		}
@@ -228,4 +266,134 @@ int ending()
 	} while (key_code != ENTER and key_code != SPACE);
 
 	return ending_choice;
+}
+
+void clear_history(int movehistory[])
+{
+	for (int i = 0; i < MAXARRAYLENGTH; i++)
+		movehistory[i] = 0;
+}
+
+// 
+int player_lvl(char* fullstr)
+{
+	bool file_missing;
+	bool continue_dowhile;
+	bool type_missing;
+
+	//используются bool file_missing = 0; bool continue_dowhile = 1;
+	do
+	{
+		file_missing = 0;
+		continue_dowhile = 0;
+		type_missing = 1;
+
+		// название уровня, введённое игроком.
+		char name_player_lvl[size_name];
+
+		/* Черновик
+		strcpy_s(name_player_lvl, "Зло");
+		printf("\n%s, %d, %d\n", name_player_lvl, sizeof(char), sizeof(name_player_lvl)); Зло, 1, 32
+		system("pause");
+		system("cls");
+		*/
+
+		//ввод имени
+		system("cls");
+		printf("Если файл с вашим уровнем находится в той же папке,\nгде и предустановленные файлы с 1 по 5 уровней,\nтогда просто введите его название.\n");
+		printf("\nЕсли ваш файл находится в другом месте,\nпожалуйста укажите полный путь к нему.\n\nВНИМАНИЕ!\nВ данной версии игры файл должен быть\nформата .txt и без пробела.\n\n");
+
+		scanf_s("%s", &name_player_lvl, size_name);
+
+
+		for (int i = 0; i < size_name; i++)
+		{
+			if (name_player_lvl[i] == '.' && name_player_lvl[i + 1] == 't' && name_player_lvl[i + 2] == 'x' && name_player_lvl[i + 3] == 't')
+				type_missing = 0;
+			if (name_player_lvl[i] == BACK_SLASH)
+				name_player_lvl[i] = '/';
+
+		}
+		if (type_missing)
+			strcat_s(name_player_lvl, ".txt");
+
+		file_missing = openfilelvl(fullstr, name_player_lvl);
+
+		if (file_missing == 1)
+		{
+			if (error_player_lvl() == 2)
+			{
+				return 1;
+			}
+			else
+			{
+				continue_dowhile = 1;
+			}
+
+		}
+
+	} while (continue_dowhile);
+
+	if (file_missing == 0)
+		filmas(fullstr);
+
+	return 0;
+
+}
+
+
+// Интерфейс при ошибке открытия уровня игрока.
+int error_player_lvl()
+{
+	int player_choice = 1;
+
+	do
+	{
+		// 1.Start 2.Exit
+		switch (player_choice)
+		{
+		case 1:
+			system("cls");
+			printf("\tНе получилось открыть файл.\n\n");
+			printf(">> Попробовать снова.\nВыбрать другой уровень.\n\npress enter or spacebar to continue");
+			break;
+
+		case 2:
+			system("cls");
+			printf("\tНе получилось открыть файл.\n\n");
+			printf("Попробовать снова.\n>> Выбрать другой уровень.\n\npress enter or spacebar to continue");
+			break;
+
+		default:
+			system("cls");
+			printf("error: menu's switch.");
+			break;
+		}
+
+		key_code = _getch();
+		switch (key_code)
+		{
+		case UP_KEY:
+		case 'W':
+		case 'w':
+		case 'Ц':
+		case 'ц':
+			player_choice = 1;
+			break;
+
+		case DOWN_KEY:
+		case 'S':
+		case 's':
+		case 'Ы':
+		case 'ы':
+			player_choice = 2;
+			break;
+
+		default:
+			break;
+		}
+
+	} while (key_code != ENTER and key_code != SPACE);
+
+	return player_choice;
 }

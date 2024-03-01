@@ -12,16 +12,19 @@ enum maxsizes { rows = 64, cols = 64, razmaszh = 16 *3};
 int mas[rows][cols];
 int znach_x = 3;
 int masznach_x[razmaszh];
-void openfilelvl(char* fullstr, const char lvl_name[])
+// Теперь возвращает: 0 - файл открылся, 1 - не получилось открыть файл.
+bool openfilelvl(char* fullstr, const char lvl_name[])
 {
 	FILE* level;
 	char str[100];
 
 	if (fopen_s(&level, lvl_name, "rt") != 0)
-		system("pause");
+		return 1;
 	while (fgets(str, 100, level))
 		strcat(fullstr, str);
 	fclose(level);
+
+	return 0;
 }
 void find_rows_cols(char* fullstr)
 {
@@ -55,14 +58,14 @@ void filmas(char str[], int mass[][cols])
 			switch (str[counterstr])
 			{
 			case '#':
-				mass[i][j] = WALL;
+				mas[i][j] = WALL;
 				break;
 			case '.':
 			case ' ':
-				mass[i][j] = EMPTY;
+				mas[i][j] = EMPTY;
 				break;
 			case '@':
-				mass[i][j] = PLAYER;
+				mas[i][j] = PLAYER;
 				break;
 			case 'w':
 				mass[i][j] = WHITEBOX;
@@ -106,7 +109,7 @@ void filmas(char str[], int mass[][cols])
 				break;
 			case'\n':
 
-				mass[i][j] = NEXTROWS;
+				mas[i][j] = NEXTROWS;
 				flag = true;
 
 			default:
