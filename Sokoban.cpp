@@ -121,9 +121,9 @@ int main()
 		{
 			mas[i] = (int*)malloc(realcols * sizeof(int));
 		}
-		/*for (int i = 0; i < realrows; i++)
+		for (int i = 0; i < realrows; i++)
 			for (int j = 0; j < realcols; j++)
-				mas[i][j] = EMPTY;*/
+				mas[i][j] = EMPTY;
 		filmas(fullstr);
 		movehistory = (int*)malloc(MAXHISTSIZE * sizeof(int)); //1024 * 4 = 4 кб
 		clear_history(movehistory);

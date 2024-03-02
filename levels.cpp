@@ -114,7 +114,7 @@ void filmas(char str[])
 				break;
 			case'\n':
 
-				mas[i][j] = NEXTROWS;
+				//mas[i][j] = NEXTROWS;
 				flag = true;
 
 			default:
@@ -192,11 +192,12 @@ void displaymatrix()
 				printf("X");
 
 				break;
-			case NEXTROWS:
-				printf("\n");
-				break;
+			//case NEXTROWS: //?
+				//printf("\n");
+				//break;
 			}
 		}
+		printf("\n");
 	}
 	
 }
