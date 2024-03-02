@@ -22,11 +22,6 @@ extern char* lvl5;
 int main()
 {
 	system("chcp 1251 > nul");
-	mas = (int**)malloc(realrows * sizeof(int*)); // макс: 64*64*4 + 64*4(?) = 16 + 0,25 кб
-	for (int i = 0; i < realrows; i++)
-	{
-		mas[i] = (int*)malloc(realcols * sizeof(int));
-	}
 	lvl1 = (char*)malloc(char_size * sizeof(char)); //4096 * 1 = 4 кб
 	lvl2 = (char*)malloc(char_size * sizeof(char)); //4096 * 1 = 4 кб
 	lvl3 = (char*)malloc(char_size * sizeof(char)); //4096 * 1 = 4 кб
@@ -121,6 +116,14 @@ int main()
 		}
 
 		find_rows_cols(fullstr);
+		mas = (int**)malloc(realrows * sizeof(int*)); // макс: 64*64*4 + 64*4(?) = 16 + 0,25 кб
+		for (int i = 0; i < realrows; i++)
+		{
+			mas[i] = (int*)malloc(realcols * sizeof(int));
+		}
+		/*for (int i = 0; i < realrows; i++)
+			for (int j = 0; j < realcols; j++)
+				mas[i][j] = EMPTY;*/
 		filmas(fullstr);
 		movehistory = (int*)malloc(MAXHISTSIZE * sizeof(int)); //1024 * 4 = 4 кб
 		clear_history(movehistory);
@@ -146,7 +149,9 @@ int main()
 			repeat_game = ending();
 
 		}
-
+		for (int i = 0; i < realrows; i++)
+			free(mas[i]);
+		free(mas);
 	} while (repeat_game != 0);
 
 	free(lvl1);
@@ -155,8 +160,5 @@ int main()
 	free(lvl4);
 	free(lvl5);
 	free(fullstr);
-	for (int i = 0; i < realrows; i++)
-		free(mas[i]);
-	free(mas);
 	return 0;
 }

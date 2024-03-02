@@ -333,8 +333,8 @@ int player_lvl(char* fullstr)
 
 	} while (continue_dowhile);
 
-	if (file_missing == 0)
-		filmas(fullstr);
+	//if (file_missing == 0)
+		//filmas(fullstr);
 
 	return 0;
 
